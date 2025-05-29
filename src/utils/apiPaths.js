@@ -1,4 +1,4 @@
-export const BASE_URL = import.meta.env.NEXT_PUBLIC_BASE_URL;
+export const BASE_URL = "https://balancr-backend.onrender.com";
 
 export const API_PATHS = {
     AUTH:{
