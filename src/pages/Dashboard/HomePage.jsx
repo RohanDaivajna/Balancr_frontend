@@ -113,7 +113,7 @@ const LandingPage = () => {
         <rect width="400" height="400" rx="50" />
       </svg>
 
-      <header className="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto p-4 md:p-6 border-b border-gray-200 w-full gap-4">
+      <header className="flex flex-row md:flex-row justify-between items-center max-w-7xl mx-auto p-4 md:p-6 border-b border-gray-200 w-full gap-4">
         <Link to="/" className="text-2xl md:text-3xl font-bold text-indigo-700 flex items-center">
           <motion.svg
             className="w-8 h-8 mr-2"
