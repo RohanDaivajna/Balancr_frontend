@@ -1,115 +1,281 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
-const fadeIn = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (delay = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, delay },
-  }),
+const features = [
+  {
+    title: "Track Expenses",
+    color: "blue",
+    desc: "Easily record income and expenses.",
+  },
+  {
+    title: "Visualize Trends",
+    color: "green",
+    desc: "See where your money goes each month.",
+  },
+];
+
+const colorMap = {
+  blue: {
+    bgLight: "bg-blue-50",
+    bgDark: "bg-blue-200",
+    text: "text-blue-700",
+  },
+  green: {
+    bgLight: "bg-green-50",
+    bgDark: "bg-green-200",
+    text: "text-green-700",
+  },
 };
-
-const featureIcons = {
-  blue: (
-    <svg className="w-12 h-12 text-blue-600 mx-auto" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-      <path d="M12 8v4l3 3" strokeLinecap="round" strokeLinejoin="round"/>
-      <circle cx="12" cy="12" r="10" stroke="currentColor"/>
+const featureIcons = [
+  (colorClass) => (
+    <svg
+      key="icon-dollar"
+      xmlns="http://www.w3.org/2000/svg"
+      className={`w-6 h-6 ${colorClass}`}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M12 1v22M16 5H8a4 4 0 1 0 0 8h6a4 4 0 1 1 0 8H8"
+      />
     </svg>
   ),
-  green: (
-    <svg className="w-12 h-12 text-green-600 mx-auto" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-      <path d="M4 12l6 6L20 6" strokeLinecap="round" strokeLinejoin="round"/>
+  (colorClass) => (
+    <svg
+      key="icon-chart"
+      xmlns="http://www.w3.org/2000/svg"
+      className={`w-6 h-6 ${colorClass}`}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M3 17v-4m4 4v-8m4 8v-6m4 6v-2m4 2v-10"
+      />
     </svg>
   ),
-};
+];
 
-const HomePage = () => {
+const LandingPage = () => {
+  const currentYear = new Date().getFullYear();
+
+  const pieData = [
+    { name: "Savings", value: 400 },
+    { name: "Expenses", value: 300 },
+    { name: "Investments", value: 300 },
+    { name: "Others", value: 200 },
+  ];
+
+  const COLORS = ["#6366F1", "#4F46E5", "#4338CA", "#3730A3"];
+
+  const barData = [
+    { month: "Jan", amount: 400 },
+    { month: "Feb", amount: 300 },
+    { month: "Mar", amount: 500 },
+    { month: "Apr", amount: 200 },
+    { month: "May", amount: 278 },
+    { month: "Jun", amount: 189 },
+  ];
+
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-blue-100 via-white to-green-100 text-gray-800">
-      {/* Hero Section */}
-      <motion.header
-        className="flex flex-col items-center justify-center text-center px-6 py-24 bg-white/80 shadow-2xl rounded-b-3xl"
-        initial="hidden"
-        animate="visible"
-        variants={fadeIn}
+    <div className="min-h-screen flex flex-col font-sans bg-white text-gray-900 relative overflow-x-hidden">
+     
+      <svg
+        className="absolute top-0 left-0 -z-10 w-96 h-96 text-indigo-100 opacity-30"
+        fill="currentColor"
+        viewBox="0 0 400 400"
       >
+        <circle cx="200" cy="200" r="200" />
+      </svg>
+      <svg
+        className="absolute bottom-0 right-0 -z-10 w-96 h-96 text-indigo-200 opacity-20"
+        fill="currentColor"
+        viewBox="0 0 400 400"
+      >
+        <rect width="400" height="400" rx="50" />
+      </svg>
+
+
+      <header className="flex justify-between items-center max-w-7xl mx-auto p-6 border-b border-gray-200 w-full">
+        <Link to="/" className="text-3xl font-bold text-indigo-700 flex items-center">
+          <motion.svg
+            className="w-8 h-8 mr-2"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            initial={{ rotate: 0 }}
+            animate={{ rotate: 360 }}
+            transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M8 12l2 2 4-4" />
+          </motion.svg>
+          Balancr
+        </Link>
+        <nav className="text-gray-700 font-medium flex flex-wrap">
+          <Link
+            to="/login"
+            className="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition whitespace-nowrap"
+          >
+            Log In
+          </Link>
+
+          <Link
+            to="/signup"
+            className="ml-4 px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition whitespace-nowrap"
+          >
+            Get Started
+          </Link>
+        </nav>
+      </header>
+
+   
+      <section className="max-w-5xl mx-auto px-6 py-20 text-center relative">
+        <motion.div
+          className="mx-auto mt-6 mb-8 w-40 h-1 rounded-full bg-indigo-600"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+        />
         <motion.h1
-          className="text-5xl sm:text-6xl font-extrabold mb-4 text-blue-700 drop-shadow-lg"
-          variants={fadeIn}
-          custom={0.1}
+          className="text-5xl md:text-6xl font-extrabold leading-tight relative z-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
         >
-          Welcome to <span className="text-green-600">Balancr</span>
+          Take Control of Your Finances with{" "}
+          <span className="text-indigo-600">Balancr</span>
         </motion.h1>
         <motion.p
-          className="text-xl sm:text-2xl text-slate-700 mb-10 max-w-2xl"
-          variants={fadeIn}
-          custom={0.2}
+          className="mt-6 text-lg max-w-3xl mx-auto text-gray-700 relative z-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.7 }}
         >
-          Your smart personal finance tracker to manage budgets and track expenses—all in one place.
+          A professional personal finance tracker that helps you budget, track
+          expenses, and grow your savings intelligently.
         </motion.p>
-        <motion.div
-          className="flex flex-col sm:flex-row gap-4"
-          variants={fadeIn}
-          custom={0.3}
-        >
-          <Link to="/signup">
-            <button className="px-8 py-3 rounded-full font-semibold shadow-lg transition text-white bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 text-lg">
-              Get Started
-            </button>
-          </Link>
-          <Link to="/login">
-            <button className="px-8 py-3 rounded-full font-semibold shadow-lg transition text-blue-700 bg-white border-2 border-blue-600 hover:bg-blue-50 text-lg">
-              Log In
-            </button>
-          </Link>
-        </motion.div>
-      </motion.header>
 
-      {/* Features Section */}
-      <section className="px-6 py-20 bg-gradient-to-br from-white via-blue-50 to-green-50">
-        <motion.h2
-          className="text-3xl sm:text-4xl font-bold text-center mb-14 text-blue-700"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeIn}
-        >
-          Features You'll Love
-        </motion.h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto">
-          {[
-            { title: "Track Expenses", color: "blue", desc: "Easily record income and expenses." },
-            { title: "Visualize Trends", color: "green", desc: "See where your money goes each month." },
-          ].map(({ title, color, desc }, i) => (
-            <motion.div
-              key={title}
-              className="bg-white/90 p-10 rounded-3xl shadow-xl text-center border border-slate-100 hover:shadow-2xl transition-all duration-300 flex flex-col items-center"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeIn}
-              custom={0.2 + i * 0.1}
-            >
-              <div className="flex items-center justify-center mb-6">
-                {featureIcons[color]}
-              </div>
-              <h3 className={`text-2xl font-semibold mb-3 text-${color}-600`}>{title}</h3>
-              <p className="text-slate-600 text-lg">{desc}</p>
-            </motion.div>
-          ))}
+      
+        <div className="mt-16 flex flex-col md:flex-row justify-center items-center gap-12">
+         
+          <div className="w-64 h-64">
+            <h3 className="text-xl font-semibold mb-4 text-indigo-700">Expense Distribution</h3>
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={pieData}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={80}
+                  fill="#8884d8"
+                  label
+                >
+                  {pieData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className="w-96 h-64">
+            <h3 className="text-xl font-semibold mb-4 text-indigo-700">Monthly Spending</h3>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={barData}>
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="amount" fill="#4F46E5" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-white/80 border-t mt-auto rounded-t-3xl shadow-inner">
-        <div className="max-w-6xl mx-auto px-6 py-10 flex flex-col sm:flex-row justify-between items-center text-sm text-slate-600">
-          <p>&copy; {new Date().getFullYear()} Balancr. All rights reserved.</p>
+   
+      <section className="max-w-6xl mx-auto px-6 py-20">
+        <h2 className="text-4xl font-extrabold text-center text-indigo-700 mb-12">
+          Our Core Features
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
+          {features.map(({ title, color, desc }, idx) => {
+            const { bgLight, bgDark, text } = colorMap[color];
+            return (
+              <div
+                key={idx}
+                className={`${bgLight} rounded-lg p-6 shadow-md flex flex-col items-center text-center hover:shadow-lg transition-shadow`}
+              >
+                <div
+                  className={`${bgDark} w-12 h-12 mb-4 rounded-full flex items-center justify-center font-bold text-xl`}
+                >
+                  {featureIcons[idx](text)}
+                </div>
+                <h3 className="text-xl font-semibold mb-2">{title}</h3>
+                <p className="text-gray-700">{desc}</p>
+              </div>
+            );
+          })}
         </div>
+      </section>
+
+     
+      <section className="max-w-4xl mx-auto px-6 py-16 text-center">
+        <motion.p
+          className="text-xl font-medium text-gray-800 mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          Ready to simplify your finances and reach your goals?
+        </motion.p>
+        <Link
+          to="/signup"
+          className="inline-block px-12 py-4 bg-indigo-600 text-white rounded-full text-lg font-semibold hover:bg-indigo-700 transition relative overflow-hidden"
+        >
+          <motion.span
+            className="absolute inset-0 bg-indigo-700 opacity-30"
+            whileHover={{ scaleX: 1.2, scaleY: 1.2 }}
+            transition={{ duration: 0.4 }}
+          />
+          <span className="relative z-10">Get Started Now</span>
+        </Link>
+      </section>
+
+      
+      <footer className="border-t border-gray-200 py-8 text-center text-gray-600 text-sm mt-auto w-full relative z-10">
+        © {currentYear}{" "}
+        <a href="/" className="text-indigo-600 font-semibold hover:underline">
+          Balancr
+        </a>
+        . All rights reserved.
       </footer>
     </div>
   );
 };
 
-export default HomePage;
+export default LandingPage;
