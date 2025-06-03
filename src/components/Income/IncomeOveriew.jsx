@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { prepareIncomeBarChartData } from '../../utils/helper';
 import { LuPlus } from 'react-icons/lu';
 import CustomBarChart from '../Charts/CustomBarChart';
 
+// IncomeOveriew component displays a summary and bar chart of income
 const IncomeOveriew = ({transactions, onAddIncome }) => {
   
+    // Local state for chart data
     const [chartData, setChartData] = useState([]);
 
+    // Update chart data whenever transactions change
     useEffect(() => {
       const result = prepareIncomeBarChartData(transactions);
       setChartData(result);
@@ -16,6 +19,7 @@ const IncomeOveriew = ({transactions, onAddIncome }) => {
     
     return (
     <div className='card'>
+        {/* Header with title, description, and add income button */}
         <div className='flex items-center justify-between'>
             <div className=''>
                 <h5 className='text-lg'>Income Overview</h5>
@@ -27,6 +31,7 @@ const IncomeOveriew = ({transactions, onAddIncome }) => {
                 <LuPlus className='text-lg' />Add Income
             </button>
         </div>
+        {/* Bar chart showing income trends */}
         <div className='mt-10'>
             <CustomBarChart data={chartData}/>
         </div>  
