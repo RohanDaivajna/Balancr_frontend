@@ -10,12 +10,14 @@ import SignUp from "./pages/Auth/SignUp";
 import Home from "./pages/Dashboard/Home";
 import Expense from "./pages/Dashboard/Expense";
 import Income from "./pages/Dashboard/Income";
-import Landing from "./pages/Dashboard/HomePage"; // <-- import the new landing page
+import Landing from "./pages/Dashboard/HomePage"; 
 import UserProvider from './context/userContext';
 import { Toaster } from 'react-hot-toast';
 
+// Check if user is authenticated by checking for token in localStorage
 const isAuthenticated = () => !!localStorage.getItem("token");
 
+// PrivateRoute component to protect routes from unauthenticated access
 const PrivateRoute = ({ children }) => (
   isAuthenticated() ? children : <Navigate to="/login" />
 );
@@ -24,11 +26,13 @@ const App = () => {
   return (
     <UserProvider>
       <div>
+        {/* App routing setup */}
         <Router>
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signUp" element={<SignUp />} />
+            {/* Protected dashboard routes */}
             <Route
               path="/dashboard"
               element={
@@ -56,6 +60,7 @@ const App = () => {
           </Routes>
         </Router>
       </div>
+      {/* Toast notifications */}
       <Toaster
         toastOptions={{
           className: "",
