@@ -12,7 +12,7 @@ import IncomeList from '../../components/Income/IncomeList';
 import DeleteAlert from '../../components/DeleteAlert';
 
 const Income = () => {
-  useUserAuth();
+  useUserAuth(); // Ensure user is authenticated
   const [incomeData, setIncomeData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [openDeleteAlert, setOpenDeleteAlert] = useState({
@@ -22,7 +22,7 @@ const Income = () => {
 
   const [openAddIncomeModel, setOpenAddIncomeModel] = useState(false)
 
-
+  // Fetch all income data from backend
    const fetchIncomeData = async () => {
       if(loading) return;
 
@@ -41,6 +41,7 @@ const Income = () => {
       }
    };
 
+   // Handle adding a new income
    const handleAddIncome = async (income) => {
     const { source, amount, date, icon } = income;
 
@@ -76,6 +77,7 @@ const Income = () => {
     }
    };
 
+   // Handle deleting an income
    const deleteIncome = async (id) => {
     try{
       await axiosInstance.delete(API_PATHS.INCOME.DELETE_INCOME(id));
@@ -89,6 +91,7 @@ const Income = () => {
     }
    };
 
+  // Handle downloading all income data as Excel
   const handleDownloadIncomeData = async () => {
     try{
       const response = await axiosInstance.get(
@@ -109,10 +112,9 @@ const Income = () => {
     }
   };
 
-
+  // Fetch income data on component mount
   useEffect(() => {
     fetchIncomeData();
-  
     return () => {};
   }, [])
   
@@ -122,12 +124,14 @@ const Income = () => {
       <div className='my-5 mx-auto'>
         <div className='grid grid-cols-1 gap-6'>
           <div className=''>
+            {/* Income overview and add button */}
             <IncomeOveriew
               transactions={incomeData}
               onAddIncome={()=> setOpenAddIncomeModel(true)}
             />
           </div>
 
+        {/* Income list with delete and download actions */}
         <IncomeList
           transactions={incomeData}
           onDelete={(id) => setOpenDeleteAlert({ show: true, data: id })}
@@ -136,6 +140,7 @@ const Income = () => {
 
         </div>
 
+        {/* Modal for adding a new income */}
         <Model
           isOpen={openAddIncomeModel}
           onClose={()=> setOpenAddIncomeModel(false)}
@@ -144,6 +149,7 @@ const Income = () => {
          <AddIncomeForm onAddIncome={handleAddIncome} />
         </Model>
 
+        {/* Modal for confirming income deletion */}
         <Model
           isOpen={openDeleteAlert.show}
           onClose={() => setOpenDeleteAlert({ show: false, data: null })}

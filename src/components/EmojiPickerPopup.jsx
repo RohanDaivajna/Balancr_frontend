@@ -2,11 +2,13 @@ import React, { useState } from 'react'
 import { LuImage, LuX } from 'react-icons/lu';
 import EmojiPicker from 'emoji-picker-react';
 
+// EmojiPickerPopup allows user to pick or change an emoji/icon
 const EmojiPickerPopup = ({icon, onSelect}) => {
-const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className='flex flex-col md:flew-row items-start gap-5 mb-6'>
+        {/* Icon display and trigger to open emoji picker */}
         <div
             className='flex items-center gap-2 cursor-pointer'
             onClick={()=> setIsOpen(true)}
@@ -22,8 +24,10 @@ const [isOpen, setIsOpen] = useState(false);
             <p className=''>{icon? "Change icon":"Pick an icon"}</p>
         </div>
 
+        {/* Emoji picker popup */}
         {isOpen && (
             <div className='relative'>
+                {/* Close button for emoji picker */}
                 <button
                     className='w-7 h-7 flex items-center justify-center bg-white border border-gray-200 rounded-full -top-2 -right-2 z-10 cursor-pointer'
                     onClick={()=> setIsOpen(false)}
@@ -31,6 +35,7 @@ const [isOpen, setIsOpen] = useState(false);
                     <LuX/>
                 </button>
 
+                {/* Emoji picker component */}
                 <EmojiPicker
                     open={isOpen}
                     onEmojiClick={(emoji) => onSelect(emoji?.imageUrl || "")}

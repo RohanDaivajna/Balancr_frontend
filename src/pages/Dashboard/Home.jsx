@@ -17,13 +17,14 @@ import RecentIncomeWithChart from '../../components/Dashboard/RecentIncomeWithCh
 import RecentIncome from '../../components/Dashboard/RecentIncome';
 
 const Home = () => {
-  useUserAuth();
+  useUserAuth(); // Ensure user is authenticated
 
   const navigate = useNavigate();
 
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  // Fetch dashboard data from backend
   const fetchDashboardData = async () => {
     if(loading) return;
     setLoading(true);
@@ -40,7 +41,7 @@ const Home = () => {
     }
   };
 
-
+  // Fetch dashboard data on component mount
   useEffect(() => {
     fetchDashboardData();
     return () => {
@@ -50,6 +51,7 @@ const Home = () => {
   return (
     <DashboardLayout activeMenu="Dashboard">
       <div className='my-5 mx-auto'>
+        {/* Info cards for balance, income, and expense */}
         <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
           <InfoCard
             icon={<IoMdCard/>}
@@ -71,33 +73,39 @@ const Home = () => {
           />
         </div>
 
-
+        {/* Dashboard widgets and charts */}
         <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-6'>
+          {/* Recent transactions list */}
           <RecentTransactions
             transactions={dashboardData?. recentTransactions}
             onSeeMore={() => navigate("/expense")}
           />
         
+          {/* Financial overview summary */}
           <FinanacialOverview
             totalBalance={dashboardData?.totalBalance || 0}
             totalIncome={dashboardData?.totalIncome || 0}
             totalExpense={dashboardData?.totalExpense || 0}
           />
 
+          {/* Expense transactions for last 30 days */}
           <ExpenseTransactions
             transactions={dashboardData?.last30DaysExpenses?.transactions || []}
             onSeeMore={() => navigate("/expense")}
             />
 
+          {/* Bar chart for last 30 days expenses */}
           <Last30DaysExpenses
             data={dashboardData?.last30DaysExpenses?.transactions || []}
             />
 
+            {/* Recent income with chart (last 60 days, top 4) */}
             <RecentIncomeWithChart
                 data={dashboardData?.last60DaysIncome?.transactions?.slice(0,4) || []}
                 totalIncome={dashboardData?.totalIncome || 0}
             />
 
+            {/* Recent income list (last 60 days) */}
             <RecentIncome
               transactions={dashboardData?.last60DaysIncome?.transactions || []}
               onSeeMore={()=> navigate("/income")}

@@ -10,27 +10,33 @@ import { UserContext } from '../../context/userContext';
 import uploadImage from '../../utils/uploadImage';
 
 const SignUp = () => {
+  // State for profile picture, form fields, and error message
   const [profilePic, setProfilePic] = useState(null);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error,setError] = useState(null);
 
+  // Get updateUser function from UserContext
   const {updateUser} = useContext(UserContext);
   const navigate = useNavigate();
 
+  // Handle form submission for sign up
   const handleSignUp =  async (e) => {
       e.preventDefault();
       let profileImageUrl=""
 
+      // Validate full name
       if(!fullName){
         setError("Please enter your name");
         return;
       }
+      // Validate email
       if(!validateEmail(email)){
         setError("Please enter a valid email address.");
         return;
       }
+      // Validate password
       if(!password){
         setError("Please enter the password.");
         return;
@@ -39,11 +45,13 @@ const SignUp = () => {
       setError("");
 
       try{
+        // Upload profile image if selected
         if(profilePic){
           const imageUploadRes = await uploadImage(profilePic);
           profileImageUrl = imageUploadRes.imageUrl || "";
         }
 
+        // Send registration request to backend
         const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER,{
           fullName,
           email,
@@ -53,12 +61,14 @@ const SignUp = () => {
 
         const {token,user} = response.data;
 
+        // If registration successful, store token and update user context
         if(token){
           localStorage.setItem("token", token);
           updateUser(user);
           navigate("/dashboard");
         }
       }catch(error){
+        // Handle and display error messages
         if(error.response && error.response.data.message){
           setError(error.response.data.message);
         }else{
@@ -76,9 +86,11 @@ const SignUp = () => {
         </p>
 
         <form onSubmit={handleSignUp} className="space-y-5">
+          {/* Profile photo selector */}
           <div className="flex justify-center">
             <ProfilePhotoSelector image={profilePic} setImage={setProfilePic}/>
           </div>
+          {/* Input fields for name, email, and password */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
               value={fullName}
@@ -108,12 +120,15 @@ const SignUp = () => {
             </div>
           </div>
 
+          {/* Display error message if any */}
           {error && <p className="text-red-500 text-xs pb-2.5">{error}</p>}
 
+          {/* Sign up button */}
           <button type="submit" className="btn-primary w-full">
             SIGN UP
           </button>
 
+          {/* Link to login page */}
           <p className="text-center text-sm">
             Already have an account?{" "}
             <Link className="font-medium text-primary underline" to="/login">

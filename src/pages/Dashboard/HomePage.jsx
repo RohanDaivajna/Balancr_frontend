@@ -13,6 +13,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+// Feature list for landing page
 const features = [
   {
     title: "Track Expenses",
@@ -26,6 +27,7 @@ const features = [
   },
 ];
 
+// Color mapping for feature cards
 const colorMap = {
   blue: {
     bgLight: "bg-blue-50",
@@ -38,6 +40,8 @@ const colorMap = {
     text: "text-green-700",
   },
 };
+
+// SVG icons for features
 const featureIcons = [
   (colorClass) => (
     <svg
@@ -78,6 +82,7 @@ const featureIcons = [
 const LandingPage = () => {
   const currentYear = new Date().getFullYear();
 
+  // Example data for pie chart
   const pieData = [
     { name: "Savings", value: 400 },
     { name: "Expenses", value: 300 },
@@ -85,8 +90,10 @@ const LandingPage = () => {
     { name: "Others", value: 200 },
   ];
 
+  // Colors for pie chart slices
   const COLORS = ["#6366F1", "#4F46E5", "#4338CA", "#3730A3"];
 
+  // Example data for bar chart
   const barData = [
     { month: "Jan", amount: 400 },
     { month: "Feb", amount: 300 },
@@ -98,6 +105,7 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col font-sans bg-white text-gray-900 relative overflow-x-hidden">
+      {/* Decorative SVG backgrounds */}
       <svg
         className="absolute top-0 left-0 -z-10 w-64 h-64 md:w-96 md:h-96 text-indigo-100 opacity-30"
         fill="currentColor"
@@ -113,6 +121,7 @@ const LandingPage = () => {
         <rect width="400" height="400" rx="50" />
       </svg>
 
+      {/* Header with logo and navigation */}
       <header className="flex flex-row md:flex-row justify-between items-center max-w-7xl mx-auto p-4 md:p-6 border-b border-gray-200 w-full gap-4">
         <Link to="/" className="text-2xl md:text-3xl font-bold text-indigo-700 flex items-center">
           <motion.svg
@@ -147,6 +156,7 @@ const LandingPage = () => {
         </nav>
       </header>
 
+      {/* Hero section with animated heading and charts */}
       <section className="max-w-5xl mx-auto px-4 md:px-6 py-10 md:py-20 text-center relative">
         <motion.div
           className="mx-auto mt-6 mb-8 w-24 md:w-40 h-1 rounded-full bg-indigo-600"
@@ -173,7 +183,9 @@ const LandingPage = () => {
           expenses, and grow your savings intelligently.
         </motion.p>
 
+        {/* Charts section */}
         <div className="mt-10 md:mt-16 flex flex-col md:flex-row justify-center items-center gap-8 md:gap-12 w-full">
+          {/* Pie chart for expense distribution */}
           <div className="w-full max-w-xs h-64 md:w-64">
             <h3 className="text-lg md:text-xl font-semibold mb-4 text-indigo-700">Expense Distribution</h3>
             <ResponsiveContainer width="100%" height="100%">
@@ -197,6 +209,7 @@ const LandingPage = () => {
             </ResponsiveContainer>
           </div>
 
+          {/* Bar chart for monthly spending */}
           <div className="w-full max-w-md h-64 md:w-96 overflow-x-auto">
             <h3 className="text-lg md:text-xl font-semibold mb-4 text-indigo-700">Monthly Spending</h3>
             <ResponsiveContainer width="100%" height="100%">
@@ -211,6 +224,7 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Features section */}
       <section className="max-w-6xl mx-auto px-4 md:px-6 py-10 md:py-20">
         <h2 className="text-2xl md:text-4xl font-extrabold text-center text-indigo-700 mb-8 md:mb-12">
           Our Core Features
@@ -236,6 +250,7 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Call to action section */}
       <section className="max-w-4xl mx-auto px-4 md:px-6 py-10 md:py-16 text-center">
         <motion.p
           className="text-lg md:text-xl font-medium text-gray-800 mb-6 md:mb-8"
@@ -258,6 +273,7 @@ const LandingPage = () => {
         </Link>
       </section>
 
+      {/* Footer */}
       <footer className="border-t border-gray-200 py-6 md:py-8 text-center text-gray-600 text-xs md:text-sm mt-auto w-full relative z-10">
         © {currentYear}{" "}
         <a href="/" className="text-indigo-600 font-semibold hover:underline">

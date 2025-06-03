@@ -10,9 +10,8 @@ import Model from '../../components/Model';
 import ExpenseList from '../../components/Expense/ExpenseList';
 import DeleteAlert from '../../components/DeleteAlert';
 
-
 const Expense = () => {
-  useUserAuth();
+  useUserAuth(); // Ensure user is authenticated
   const [expenseData, setExpenseData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [openDeleteAlert, setOpenDeleteAlert] = useState({
@@ -22,25 +21,27 @@ const Expense = () => {
 
   const [openAddExpenseModel, setOpenAddExpenseModel] = useState(false)
 
-    const fetchExpenseData = async () => {
-      if(loading) return;
+  // Fetch all expense data from backend
+  const fetchExpenseData = async () => {
+    if(loading) return;
 
-      try{
-        const response = await axiosInstance.get(
-          `${API_PATHS.EXPENSE.GET_ALL_EXPENSE}`
-        );
+    try{
+      const response = await axiosInstance.get(
+        `${API_PATHS.EXPENSE.GET_ALL_EXPENSE}`
+      );
 
-        if(response.data){
-          setExpenseData(response.data);
-        }
-      }catch(error){
-        console.log("Something went wrong. Please try again", error);
-      }finally{
-        setLoading(false);
+      if(response.data){
+        setExpenseData(response.data);
       }
-   };
+    }catch(error){
+      console.log("Something went wrong. Please try again", error);
+    }finally{
+      setLoading(false);
+    }
+  };
 
-   const handleAddExpense = async (expense) => {
+  // Handle adding a new expense
+  const handleAddExpense = async (expense) => {
     const { category, amount, date, icon } = expense;
 
     if(!category.trim()){
@@ -73,9 +74,10 @@ const Expense = () => {
         error.response?.data?.message || error.message
       );
     }
-   };
+  };
 
-   const deleteExpense = async (id) => {
+  // Handle deleting an expense
+  const deleteExpense = async (id) => {
     try{
       await axiosInstance.delete(API_PATHS.EXPENSE.DELETE_EXPENSE(id));
       setOpenDeleteAlert({ show: false, data: null });
@@ -86,8 +88,9 @@ const Expense = () => {
         error.response?.data?.message || error.message
       );
     }
-   };
+  };
 
+  // Handle downloading all expense data as Excel
   const handleDownloadExpenseData = async () => {
     try{
       const response = await axiosInstance.get(
@@ -108,23 +111,25 @@ const Expense = () => {
     }
   };
 
+  // Fetch expense data on component mount
   useEffect(() => {
     fetchExpenseData();
     return () => {};
   }, []);
   
-
   return (
    <DashboardLayout activeMenu="Expense">
       <div className='my-5 mx-auto'>
         <div className='grid grid-cols-1 gap-6'>
           <div className=''>
+            {/* Expense overview and add button */}
             <ExpenseOverview
               transactions={expenseData}
               onExpenseIncome={()=> setOpenAddExpenseModel(true)}
             />
           </div>
 
+          {/* Expense list with delete and download actions */}
           <ExpenseList
             transactions={expenseData}
             onDelete={(id)=> setOpenDeleteAlert({ show: true, data: id })}
@@ -133,6 +138,7 @@ const Expense = () => {
 
         </div>
 
+        {/* Modal for adding a new expense */}
         <Model
           isOpen={openAddExpenseModel}
           onClose={() => setOpenAddExpenseModel(false)}
@@ -141,7 +147,8 @@ const Expense = () => {
             <AddExpenseForm onAddExpense={handleAddExpense} />
           </Model>
 
-          <Model
+        {/* Modal for confirming expense deletion */}
+        <Model
           isOpen={openDeleteAlert.show}
           onClose={() => setOpenDeleteAlert({ show: false, data: null })}
           title="Delete Expense"
@@ -151,7 +158,6 @@ const Expense = () => {
             onDelete={() => deleteExpense(openDeleteAlert.data)}
           />
         </Model>
-
 
       </div>
     </DashboardLayout>
