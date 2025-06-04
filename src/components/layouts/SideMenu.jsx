@@ -3,6 +3,8 @@ import { SIDE_MENU_DATA } from "../../utils/data";
 import { UserContext } from '../../context/userContext';
 import { useNavigate } from "react-router-dom"
 import CharAvatar from '../Cards/CharAvatar';
+import { BASE_URL } from "../../utils/apiPaths"; // Add this import
+
 
 const SideMenu = ({ activeMenu }) => {
 
@@ -22,13 +24,20 @@ const SideMenu = ({ activeMenu }) => {
         clearUser();
         navigate("/login");
     };
-
+     const getProfileImageUrl = () => {
+        if (!user?.profileImageUrl) return "";
+        // If already absolute (starts with http), return as is
+        if (user.profileImageUrl.startsWith("http")) return user.profileImageUrl;
+        // Otherwise, prepend BASE_URL
+        return `${BASE_URL}${user.profileImageUrl}`;
+    };
+    
     return (
         <div className='w-64 h-[calc(100vh-61px)] bg-white border-r border-gray-200/50 sticky top-[61px] z-20 shadow-md flex flex-col'>
             <div className='flex flex-col items-center justify-center gap-3 mt-6 mb-6'>
-                {user?.profileImageUrl ? (
+                {getProfileImageUrl() ? (
                     <img
-                        src={user?.profileImageUrl || ""}
+                        src={getProfileImageUrl()}
                         alt='Profile Image'
                         className='w-20 h-20 bg-slate-400 rounded-full shadow'
                     />
